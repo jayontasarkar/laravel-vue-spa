@@ -12,17 +12,23 @@
 			</div>
 	
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
-				<ul class="nav navbar-nav navbar-right">
-					<li><router-link :to="{ name: 'timeline' }">My Timeline</router-link></li>
+				<ul class="nav navbar-nav navbar-right" v-if=" !user.authenticated ">
 					<li><router-link :to="{ name: 'login' }">Login</router-link></li>
 					<li><router-link :to="{ name: 'register' }">Register</router-link></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right" v-else>
+					<li><router-link :to="{ name: 'timeline' }">My Timeline</router-link></li>
 					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							{{ user.data.email }}
+							 <b class="caret"></b>
+						</a>
 						<ul class="dropdown-menu">
-							<li><a href="#">Action</a></li>
-							<li><a href="#">Another action</a></li>
-							<li><a href="#">Something else here</a></li>
-							<li><a href="#">Separated link</a></li>
+							<li><a href="#">Settings</a></li>
+							<li class="divider"></li>
+							<li><a href="#">Profile</a></li>
+							<li class="divider"></li>
+							<li><a href="#">Logout</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -30,3 +36,13 @@
 		</div>
 	</nav>
 </template>
+
+<script>
+	import { mapGetters } from 'vuex';
+
+	export default {
+		computed: mapGetters({
+			user: 'auth/user'
+		})
+	}
+</script>

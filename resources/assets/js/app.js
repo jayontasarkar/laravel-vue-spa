@@ -1,4 +1,5 @@
 import router from './router';
+import store from './vuex';
 
 require('./bootstrap');
 
@@ -9,5 +10,6 @@ Vue.component('navigation', require('./components/Navigation.vue'));
 
 const app = new Vue({
     el: '#app',
+    store: store,
     router: router
 });
