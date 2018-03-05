@@ -1,6 +1,12 @@
 import router from './router';
 import store from './vuex';
 
+import localforage from 'localforage';
+localforage.config({
+	driver: localforage.LOCALSTORAGE,
+	storeName: 'codebite'
+});
+
 require('./bootstrap');
 
 window.Vue = require('vue');
