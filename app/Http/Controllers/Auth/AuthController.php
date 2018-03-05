@@ -60,9 +60,9 @@ class AuthController extends Controller
     public function register(RegisterFormRequest $request)
     {
     	$user = User::create($request->only('name', 'email', 'password'));
-    	$token = $this->auth->validate($request->only('email', 'password'));
+    	$token = $this->auth->attempt($request->only('email', 'password'));
 
-    	return $response->json([
+    	return response()->json([
     		'data' => $user,
     		'meta' => [
     			'token' => $token
