@@ -1,8 +1,12 @@
+import { isEmpty } from 'lodash';
 import {setHttpToken} from '../../../helpers';
+import localforage from 'localforage';
 
 export const register = ({dispatch}, {payload, context}) => {
 	return axios.post('/api/register', payload).then((response) => {
-		console.log(response);
+		dispatch('setToken', response.data.meta.token).then(() => {
+			dispatch('fetchUser')
+		})
 	}).catch((error) => {
 		context.errors = error.response.data.errors;
 	});
@@ -26,6 +30,27 @@ export const fetchUser = ({commit}) => {
 }
 
 export const setToken = ({commit, dispatch}, token) => {
+	if( isEmpty(token) ) {
+		return dispatch('checkTokenExists').then((token) => {
+			setHttpToken(token);
+		})
+	}
 	commit('setToken', token)
 	setHttpToken(token)
+}
+
+export const checkTokenExists = ({commit, dispatch}, token) => {
+	return localforage.getItem('authtoken').then((token)=>{
+		if( isEmpty(token) ) {
+			return Promise.reject('NO_STORAGE_TOKEN');
+		}
+		return Promise.resolve(token)
+	})
+}
+
+export const clearAuth = ({commit}, token) => {
+	commit('checkAuthenticated', false);
+	commit('setUserData', null);
+	commit('setToken', null);
+	commit('setHttpToken', null);
 }
