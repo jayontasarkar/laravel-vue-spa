@@ -32775,6 +32775,8 @@ __WEBPACK_IMPORTED_MODULE_1__vuex__["a" /* default */].dispatch('auth/setToken')
 		__WEBPACK_IMPORTED_MODULE_1__vuex__["a" /* default */].dispatch('auth/clearAuth');
 		__WEBPACK_IMPORTED_MODULE_0__router__["a" /* default */].replace({ name: 'login' });
 	});
+}).catch(function () {
+	__WEBPACK_IMPORTED_MODULE_1__vuex__["a" /* default */].dispatch('auth/clearAuth');
 });
 
 var app = new Vue({
@@ -32792,6 +32794,7 @@ var app = new Vue({
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_index__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__beforeEach__ = __webpack_require__(74);
 
 
 
@@ -32805,7 +32808,7 @@ var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
 	linkActiveClass: "active"
 });
 
-// BeforeEach hook
+router.beforeEach(__WEBPACK_IMPORTED_MODULE_3__beforeEach__["a" /* default */]);
 
 /* harmony default export */ __webpack_exports__["a"] = (router);
 
@@ -50971,6 +50974,33 @@ if (false) {
     require("vue-hot-reload-api")      .rerender("data-v-9364ea6a", module.exports)
   }
 }
+
+/***/ }),
+/* 73 */,
+/* 74 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__vuex__ = __webpack_require__(38);
+
+
+var beforeEach = function beforeEach(to, from, next) {
+	__WEBPACK_IMPORTED_MODULE_0__vuex__["a" /* default */].dispatch('auth/checkTokenExists').then(function () {
+		if (to.meta.guest) {
+			next({ name: home });
+			return;
+		}
+		next();
+	}).catch(function () {
+		if (to.meta.needsAuth) {
+			next({ name: 'login' });
+			return;
+		}
+		next();
+	});
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (beforeEach);
 
 /***/ })
 /******/ ]);
